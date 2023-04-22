@@ -1,33 +1,48 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { handleModalToggle, selectBalance } from '../../store/rootReducer';
+import { COLORS } from '../../variables/colors';
+import { FONTS } from '../../variables/fonts';
+import { TEXT } from '../../variables/text';
 
-export function Section(): JSX.Element {
-    const [currentWeekBalance, setCurrentWeekBalance] = useState(2000);
+const POSITIVE_REMAINDER = 500;
+export const Section = (): JSX.Element => {
+    const balance = useAppSelector(selectBalance);
+    const dispatch = useAppDispatch();
+    const [isPositive, setIsPositive] = useState(true);
+
+    const textColor = {
+        color: isPositive ? COLORS.MONEY_GREEN : COLORS.RED,
+    };
+
+    useEffect(() => {
+        balance > POSITIVE_REMAINDER
+            ? setIsPositive(true)
+            : setIsPositive(false);
+    }, [balance]);
 
     return (
         <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>{currentWeekBalance}</Text>
-            <Button title="calculate" onPress={() => console.log('awdawdawdawd')}></Button>
-            <Text style={styles.sectionDescription}></Text>
+            <Text style={[styles.sectionTitle, textColor]}>{balance}</Text>
+            <Button
+                color={COLORS.CINNABAR_RED}
+                title={TEXT.CALCULATE}
+                onPress={() => dispatch(handleModalToggle())}
+            />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     sectionContainer: {
-        marginTop: 32,
+        margin: 32,
         paddingHorizontal: 24,
     },
     sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-    },
-    highlight: {
-        fontWeight: '700',
+        fontSize: FONTS.SIZE.MAIN_TITLE,
+        fontWeight: '900',
+        textAlign: 'center',
+        paddingBottom: 24,
     },
 });

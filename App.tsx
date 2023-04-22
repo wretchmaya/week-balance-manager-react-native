@@ -4,69 +4,113 @@
  *
  * @format
  */
-
 import React from 'react';
-import {Section} from './components/Section/Section';
+import { Section } from './components/Section/Section';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Header } from './components/Header/Header';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { EnhancedModal } from './components/EnhancedModal/EnhancedModal';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
-} from 'react-native';
+    handleDecrementBalance,
+    handleWeekHistory,
+    selectBalance,
+    selectHistory,
+} from './store/rootReducer';
+import { getDateFormat } from './helpers/getDateFormat';
+import { HistoryItem } from './components/HistoryItem/HistoryItem';
+import { TEXT } from './variables/text';
+import { COLORS } from './variables/colors';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Header} from './components/Header/Header';
+const App = (): JSX.Element => {
+    const history = useAppSelector(selectHistory);
+    const balance = useAppSelector(selectBalance);
+    const dispatch = useAppDispatch();
 
-function App(): JSX.Element {
-    const isDarkMode = useColorScheme() === 'dark';
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    const handleBalanceCalculation = (spentValue: string) => {
+        dispatch(handleDecrementBalance(Number(spentValue)));
+        createHistoryEntry(spentValue);
     };
-		console.log('reawd')
+
+    const createHistoryEntry = (spentValue: string) => {
+        const historyEntry = {
+            date: getDateFormat(),
+            spent: spentValue,
+            remainder: balance - Number(spentValue),
+        };
+        dispatch(handleWeekHistory(historyEntry));
+    };
 
     return (
-        <SafeAreaView style={backgroundStyle}>
-            <StatusBar
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            />
-            <Header />
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
-                <View
-                    style={{
-                        backgroundColor: isDarkMode
-                            ? Colors.black
-                            : Colors.white,
-                    }}>
-                    <Section></Section>
+        <View style={styles.backGround}>
+            <View>
+                <Header />
+                <Section></Section>
+                <EnhancedModal
+                    handleBalanceCalculation={handleBalanceCalculation}
+                />
+            </View>
+            <View>
+                <View style={styles.listHead}>
+                    <Text style={[styles.listHead__title, styles.titleDate]}>
+                        {TEXT.DATE}
+                    </Text>
+                    <View style={styles.listHead__content}>
+                        <Text style={styles.listHead__title}>{TEXT.SPENT}</Text>
+                        <Text style={styles.listHead__title}>
+                            {TEXT.REMAINDER}
+                        </Text>
+                    </View>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+                <View>
+                    <ScrollView style={styles.listContent}>
+                        {history.map((item, index) => (
+                            <HistoryItem {...item} key={index} />
+                        ))}
+                    </ScrollView>
+                </View>
+            </View>
+        </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
+    backGround: {
+        backgroundColor: COLORS.DARK_BLUE,
+        height: '100%',
+        color: COLORS.WHITE,
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
+    titleDate: {
+        marginLeft: 40,
     },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
+    listHead: {
+        marginVertical: 15,
+        marginHorizontal: 40,
+        marginRight: 30,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
-    highlight: {
-        fontWeight: '700',
+    listHead__title: {
+        color: COLORS.WHITE,
+    },
+    listHead__content: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 160,
+        marginLeft: 40,
+    },
+    listContent: {
+        height: 500,
     },
 });
 
-export default App;
+const Root = () => {
+    return (
+        <Provider store={store}>
+            <App />
+        </Provider>
+    );
+};
+export default Root;
