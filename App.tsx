@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     listHead: {
         marginVertical: 15,
         marginHorizontal: 40,
-        marginRight: 30,
+        marginRight: 14,
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -97,9 +97,9 @@ const styles = StyleSheet.create({
     },
     listHead__content: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 160,
-        marginLeft: 40,
+        justifyContent: 'space-around',
+        width: 165,
+        marginLeft: 55,
     },
     listContent: {
         height: 500,

@@ -1,7 +1,7 @@
 export const TEXT = {
     DATE: 'Date',
     SPENT: 'Spent',
-    REMAINDER: 'Remainder',
+    REMAINDER: 'Left',
 		DONE: 'Done',
 		CALCULATE: 'Calculate',
     APP: {
