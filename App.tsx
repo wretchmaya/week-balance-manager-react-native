@@ -10,22 +10,29 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Header } from './components/Header/Header';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { EnhancedModal } from './components/EnhancedModal/EnhancedModal';
+import { BalanceCalculationModal } from './components/BalanceCalculationModal/BalanceCalculationModal';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import {
     handleDecrementBalance,
     handleWeekHistory,
     selectBalance,
+    selectHasSetWeekBalance,
     selectHistory,
+    selectIsLoading,
 } from './store/rootReducer';
 import { getDateFormat } from './helpers/getDateFormat';
 import { HistoryItem } from './components/HistoryItem/HistoryItem';
 import { TEXT } from './variables/text';
 import { COLORS } from './variables/colors';
+import { NavigationContainer } from '@react-navigation/native';
+import { Preloader } from './components/Preloader/Preloader';
+import { BalanceSettingModal } from './components/BalanceSettingModal/BalanceSettingModal';
 
 const App = (): JSX.Element => {
     const history = useAppSelector(selectHistory);
     const balance = useAppSelector(selectBalance);
+    const hasSetWeekBalance = useAppSelector(selectHasSetWeekBalance);
+    const isLoading = useAppSelector(selectIsLoading);
     const dispatch = useAppDispatch();
 
     const handleBalanceCalculation = (spentValue: string) => {
@@ -43,35 +50,49 @@ const App = (): JSX.Element => {
     };
 
     return (
-        <View style={styles.backGround}>
-            <View>
-                <Header />
-                <Section></Section>
-                <EnhancedModal
-                    handleBalanceCalculation={handleBalanceCalculation}
-                />
+        <NavigationContainer>
+            <View style={styles.backGround}>
+                {isLoading ? (
+                    <Preloader />
+                ) : (
+                    <>
+                        <Header />
+                        <Section />
+                        {!hasSetWeekBalance && <BalanceSettingModal />}
+                        <BalanceCalculationModal
+                            handleBalanceCalculation={handleBalanceCalculation}
+                        />
+                        <View>
+                            <View style={styles.listHead}>
+                                <Text
+                                    style={[
+                                        styles.listHead__title,
+                                        styles.titleDate,
+                                    ]}
+                                >
+                                    {TEXT.DATE}
+                                </Text>
+                                <View style={styles.listHead__content}>
+                                    <Text style={styles.listHead__title}>
+                                        {TEXT.SPENT}
+                                    </Text>
+                                    <Text style={styles.listHead__title}>
+                                        {TEXT.REMAINDER}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View>
+                                <ScrollView style={styles.listContent}>
+                                    {history.map((item, index) => (
+                                        <HistoryItem {...item} key={index} />
+                                    ))}
+                                </ScrollView>
+                            </View>
+                        </View>
+                    </>
+                )}
             </View>
-            <View>
-                <View style={styles.listHead}>
-                    <Text style={[styles.listHead__title, styles.titleDate]}>
-                        {TEXT.DATE}
-                    </Text>
-                    <View style={styles.listHead__content}>
-                        <Text style={styles.listHead__title}>{TEXT.SPENT}</Text>
-                        <Text style={styles.listHead__title}>
-                            {TEXT.REMAINDER}
-                        </Text>
-                    </View>
-                </View>
-                <View>
-                    <ScrollView style={styles.listContent}>
-                        {history.map((item, index) => (
-                            <HistoryItem {...item} key={index} />
-                        ))}
-                    </ScrollView>
-                </View>
-            </View>
-        </View>
+        </NavigationContainer>
     );
 };
 
@@ -102,7 +123,7 @@ const styles = StyleSheet.create({
         marginLeft: 55,
     },
     listContent: {
-        height: 500,
+        height: '68%',
     },
 });
 

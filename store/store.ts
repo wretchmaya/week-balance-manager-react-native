@@ -1,9 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import rootReducer, { updateState } from './rootReducer';
+import rootReducer, { setIsLoading, updateState } from './rootReducer';
 import debounce from 'lodash.debounce';
 import {
     clearStorageOnMonday,
     getDataFromStorage,
+    getIsSetWeekBalanceOnMonday,
     saveDataToStorage,
 } from './utils';
 
@@ -15,24 +16,29 @@ export const store = configureStore({
 
 (async () => {
     await clearStorageOnMonday();
+    await getIsSetWeekBalanceOnMonday();
 
     const cachedData = await getDataFromStorage();
 
     if (cachedData) {
-        const [weekHistory, weekBalance] = cachedData;
+        const [weekHistory, weekBalance, hasSetWeekBalance] = cachedData;
         store.dispatch(
             updateState({
                 weekHistory,
                 weekBalance,
+                hasSetWeekBalance,
             }),
         );
+        return;
     }
+    store.dispatch(setIsLoading());
 })();
 
 const _debounce = debounce(() => {
     saveDataToStorage(
         store.getState().mainStore.weekHistory,
         store.getState().mainStore.weekBalance,
+        store.getState().mainStore.hasSetWeekBalance,
     );
 }, 600);
 

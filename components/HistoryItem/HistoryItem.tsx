@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { HistoryEntry } from '../../store/rootReducer';
 import { COLORS } from '../../variables/colors';
 import { FONTS } from '../../variables/fonts';
+import React from 'react';
 
 export const HistoryItem = ({
     date,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
         fontSize: FONTS.SIZE.TEXT,
     },
     titleDate: {
-        width: 140,
+        width: 160,
         fontSize: FONTS.SIZE.TEXT,
     },
     titleSpent: {

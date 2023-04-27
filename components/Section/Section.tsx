@@ -27,7 +27,7 @@ export const Section = (): JSX.Element => {
             <Text style={[styles.sectionTitle, textColor]}>{balance}</Text>
             <Button
                 color={COLORS.CINNABAR_RED}
-                title={TEXT.CALCULATE}
+                title={TEXT.BUTTON.CALCULATE}
                 onPress={() => dispatch(handleModalToggle())}
             />
         </View>

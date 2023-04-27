@@ -14,13 +14,13 @@ import {
 import { TEXT } from '../../variables/text';
 import { FONTS } from '../../variables/fonts';
 
-interface EnhancedModalProps {
+interface BalanceCalculationModalProps {
     handleBalanceCalculation: (value: string) => void;
 }
 
-export const EnhancedModal = ({
+export const BalanceCalculationModal = ({
     handleBalanceCalculation,
-}: EnhancedModalProps): JSX.Element => {
+}: BalanceCalculationModalProps): JSX.Element => {
     const isModalVisible = useAppSelector(selectModalStatus);
     const dispatch = useAppDispatch();
     const [spentValue, setSpentValue] = useState('');
@@ -42,7 +42,7 @@ export const EnhancedModal = ({
             <View style={styles.modalWrapper}>
                 <View style={styles.modal}>
                     <Text style={styles.modalTitle}>
-                        {TEXT.APP.INPUT_TITLE}
+                        {TEXT.MODAL.SPENT_BALANCE.INPUT_LABEL}
                     </Text>
                     <TextInput
                         style={styles.modalInput}
@@ -52,10 +52,10 @@ export const EnhancedModal = ({
                         value={spentValue}
                     />
                     <Button
-                        title={TEXT.DONE}
+                        title={TEXT.BUTTON.DONE}
                         onPress={handleOnPress}
                         disabled={!spentValue}
-                    ></Button>
+                    />
                 </View>
             </View>
         </Modal>
