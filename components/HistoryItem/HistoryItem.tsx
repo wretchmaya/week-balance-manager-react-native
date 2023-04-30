@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import {
     HistoryEntry,
     handleRemoveHistoryEntry,
@@ -7,6 +7,7 @@ import { COLORS } from '../../variables/colors';
 import { FONTS } from '../../variables/fonts';
 import React from 'react';
 import { useAppDispatch } from '../../store/hooks';
+import { TEXT } from '../../variables/text';
 
 export const HistoryItem = ({
     date,
@@ -15,8 +16,22 @@ export const HistoryItem = ({
 }: HistoryEntry): JSX.Element => {
     const dispatch = useAppDispatch();
 
-    const removeItem = (): void => {
-        dispatch(handleRemoveHistoryEntry(remainder, spent));
+    const removeItem = () => {
+        Alert.alert(
+            TEXT.ALERT.DELETE_HISTORY_ENTRY.TITLE,
+            TEXT.ALERT.DELETE_HISTORY_ENTRY.TEXT,
+            [
+                {
+                    text: TEXT.BUTTON.NO,
+                    style: 'cancel',
+                },
+                {
+                    text: TEXT.BUTTON.YES,
+                    onPress: () =>
+                        dispatch(handleRemoveHistoryEntry(remainder, spent)),
+                },
+            ],
+        );
     };
     return (
         <View style={styles.item}>

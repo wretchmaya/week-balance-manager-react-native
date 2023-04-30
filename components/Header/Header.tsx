@@ -10,16 +10,20 @@ export const Header = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
     const createResetBalanceAlert = () =>
-        Alert.alert(TEXT.ALERT.TITLE, TEXT.ALERT.TEXT, [
-            {
-                text: TEXT.BUTTON.CANCEL,
-                style: 'cancel',
-            },
-            {
-                text: TEXT.BUTTON.YES,
-                onPress: () => dispatch(handleResetState()),
-            },
-        ]);
+        Alert.alert(
+            TEXT.ALERT.RESET_BALANCE.TITLE,
+            TEXT.ALERT.RESET_BALANCE.TEXT,
+            [
+                {
+                    text: TEXT.BUTTON.CANCEL,
+                    style: 'cancel',
+                },
+                {
+                    text: TEXT.BUTTON.YES,
+                    onPress: () => dispatch(handleResetState()),
+                },
+            ],
+        );
 
     return (
         <View>
