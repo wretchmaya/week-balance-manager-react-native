@@ -1,45 +1,54 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { HistoryEntry } from '../../store/rootReducer';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import {
+    HistoryEntry,
+    handleRemoveHistoryEntry,
+} from '../../store/rootReducer';
 import { COLORS } from '../../variables/colors';
 import { FONTS } from '../../variables/fonts';
 import React from 'react';
+import { useAppDispatch } from '../../store/hooks';
 
 export const HistoryItem = ({
     date,
     spent,
     remainder,
-}: HistoryEntry): JSX.Element => (
-    <View style={styles.item}>
-        <Text style={(styles.title, styles.titleDate)}>{date}</Text>
-        <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
-        <Text style={[styles.title, styles.titleBalance]}>{remainder}</Text>
-    </View>
-);
+}: HistoryEntry): JSX.Element => {
+    const dispatch = useAppDispatch();
+
+    const removeItem = (): void => {
+        dispatch(handleRemoveHistoryEntry(remainder, spent));
+    };
+    return (
+        <View style={styles.item}>
+            <Text style={[styles.title, styles.titleDate]}>{date}</Text>
+            <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
+            <Text style={[styles.title, styles.titleBalance]}>{remainder}</Text>
+
+            <Button title="del" onPress={removeItem} color={COLORS.DARK_BLUE} />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     item: {
-        backgroundColor: COLORS.AZURE,
-        paddingVertical: 20,
-        marginVertical: 4,
-        marginHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        paddingVertical: 20,
+        marginVertical: 4,
+        marginHorizontal: 12,
+        backgroundColor: COLORS.AZURE,
     },
     title: {
         fontSize: FONTS.SIZE.TEXT,
+        verticalAlign: 'middle',
     },
-    titleDate: {
-        width: 160,
-        fontSize: FONTS.SIZE.TEXT,
-    },
+    titleDate: {},
     titleSpent: {
         color: COLORS.RED,
+        width: 35,
         textAlign: 'center',
-        width: 40,
-        marginRight: 20,
     },
     titleBalance: {
         color: COLORS.MONEY_GREEN,
-        marginRight: 7,
     },
 });

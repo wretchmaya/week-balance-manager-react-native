@@ -83,7 +83,7 @@ const App = (): JSX.Element => {
                             </View>
                             <View>
                                 <ScrollView style={styles.listContent}>
-                                    {history.map((item, index) => (
+                                    {history?.map((item, index) => (
                                         <HistoryItem {...item} key={index} />
                                     ))}
                                 </ScrollView>
@@ -103,24 +103,23 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE,
     },
     titleDate: {
-        marginLeft: 40,
+        width: 50,
     },
     listHead: {
         marginVertical: 15,
-        marginHorizontal: 40,
-        marginRight: 14,
+        marginHorizontal: 25,
         flexWrap: 'wrap',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
     listHead__title: {
         color: COLORS.WHITE,
     },
     listHead__content: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: 165,
-        marginLeft: 55,
+        justifyContent: 'space-between',
+        width: 100,
+        marginRight: 55,
     },
     listContent: {
         height: '68%',

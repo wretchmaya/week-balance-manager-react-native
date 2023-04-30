@@ -29,7 +29,7 @@ export const rootSlice = createSlice({
     reducers: {
         updateState(state, action) {
             state.weekHistory = action.payload.weekHistory;
-            state.weekBalance = action.payload.weekBalance;
+            state.weekBalance = +action.payload.weekBalance;
             state.hasSetWeekBalance = action.payload.hasSetWeekBalance;
             state.isLoading = false;
         },
@@ -53,6 +53,13 @@ export const rootSlice = createSlice({
         setIsLoading(state) {
             state.isLoading = false;
         },
+        removeHistoryEnty(state, action) {
+            state.weekBalance =
+                state.weekBalance + Number(action.payload.spentAmount);
+            state.weekHistory = state.weekHistory.filter(
+                item => item.remainder !== action.payload.remainder,
+            );
+        },
     },
 });
 
@@ -72,6 +79,7 @@ export const {
     resetState,
     setWeekBalance,
     setIsLoading,
+    removeHistoryEnty,
 } = rootSlice.actions;
 
 export const handleModalToggle =
@@ -102,6 +110,12 @@ export const handleSetWeekBalance =
     (amount: number) =>
     (dispatch: AppDispatch): void => {
         dispatch(setWeekBalance(amount));
+    };
+
+export const handleRemoveHistoryEntry =
+    (remainder: number, spentAmount: string) =>
+    (dispatch: AppDispatch): void => {
+        dispatch(removeHistoryEnty({ remainder, spentAmount }));
     };
 
 export default rootSlice.reducer;
