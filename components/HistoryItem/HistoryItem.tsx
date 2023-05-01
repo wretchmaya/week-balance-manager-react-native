@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert, Pressable } from 'react-native';
 import {
     HistoryEntry,
     handleRemoveHistoryEntry,
@@ -34,13 +34,21 @@ export const HistoryItem = ({
         );
     };
     return (
-        <View style={styles.item}>
-            <Text style={[styles.title, styles.titleDate]}>{date}</Text>
-            <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
-            <Text style={[styles.title, styles.titleBalance]}>{remainder}</Text>
+        <Pressable onPress={() => console.log('pressable')}>
+            <View style={styles.item}>
+                <Text style={[styles.title, styles.titleDate]}>{date}</Text>
+                <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
+                <Text style={[styles.title, styles.titleBalance]}>
+                    {remainder}
+                </Text>
 
-            <Button title="del" onPress={removeItem} color={COLORS.DARK_BLUE} />
-        </View>
+                <Button
+                    title="del"
+                    onPress={removeItem}
+                    color={COLORS.DARK_BLUE}
+                />
+            </View>
+        </Pressable>
     );
 };
 
