@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { handleModalToggle, selectBalance } from '../../store/rootReducer';
+import { useAppSelector } from '../../store/hooks';
+import { selectBalance } from '../../store/rootReducer';
 import { COLORS } from '../../variables/colors';
 import { FONTS } from '../../variables/fonts';
 import { TEXT } from '../../variables/text';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '../../variables/routes';
 
 const POSITIVE_REMAINDER = 500;
 export const Section = (): JSX.Element => {
     const balance = useAppSelector(selectBalance);
-    const dispatch = useAppDispatch();
     const [isPositive, setIsPositive] = useState(true);
+    const navigation = useNavigation<any>();
 
     const textColor = {
         color: isPositive ? COLORS.MONEY_GREEN : COLORS.RED,
@@ -22,13 +24,17 @@ export const Section = (): JSX.Element => {
             : setIsPositive(false);
     }, [balance]);
 
+    const openModal = () => {
+        navigation.navigate(ROUTES.SCREENS.BALANCE_CALCULATION);
+    };
+
     return (
         <View style={styles.sectionContainer}>
             <Text style={[styles.sectionTitle, textColor]}>{balance}</Text>
             <Button
                 color={COLORS.CINNABAR_RED}
                 title={TEXT.BUTTON.CALCULATE}
-                onPress={() => dispatch(handleModalToggle())}
+                onPress={openModal}
             />
         </View>
     );

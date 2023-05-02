@@ -14,10 +14,6 @@ export const TEXT = {
     },
     APP: {
         TITLE: 'Week Balance Calculator',
-        SCREENS: {
-            MAIN: 'Main',
-            DETAILS: 'Details',
-        },
     },
     MODAL: {
         SPENT_BALANCE: {

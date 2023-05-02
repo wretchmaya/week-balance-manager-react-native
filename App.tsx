@@ -10,8 +10,9 @@ import { store } from './store/store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HistoryItemDetailsScreen } from './components/HistoryDetailsScreen/HistoryDetailsScreen';
-import { TEXT } from './variables/text';
 import { MainScreen } from './components/MainScreen/MainScreen';
+import { BalanceCalculationScreen } from './components/BalanceCalculationScreen/BalanceCalculationScreen';
+import { ROUTES } from './variables/routes';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,12 +23,16 @@ const App = (): JSX.Element => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen
-                    name={TEXT.APP.SCREENS.MAIN}
+                    name={ROUTES.SCREENS.MAIN}
                     component={MainScreen}
                 />
                 <Stack.Screen
-                    name={TEXT.APP.SCREENS.DETAILS}
+                    name={ROUTES.SCREENS.DETAILS}
                     component={HistoryItemDetailsScreen}
+                />
+                <Stack.Screen
+                    name={ROUTES.SCREENS.BALANCE_CALCULATION}
+                    component={BalanceCalculationScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

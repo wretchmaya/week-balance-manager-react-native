@@ -9,6 +9,7 @@ import React from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { TEXT } from '../../variables/text';
 import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '../../variables/routes';
 export const HistoryItem = ({
     date,
     spent,
@@ -37,7 +38,7 @@ export const HistoryItem = ({
     };
 
     const navigateToDetails = () => {
-        navigation.navigate('Details', { date, spent, note });
+        navigation.navigate(ROUTES.SCREENS.DETAILS, { date, spent, note });
     };
 
     return (

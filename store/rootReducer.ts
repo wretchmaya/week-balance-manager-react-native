@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from './store';
 interface InitialState {
     weekBalance: number;
     weekHistory: HistoryEntry[];
-    isModalVisible: boolean;
     hasSetWeekBalance: boolean;
     isLoading: boolean;
 }
@@ -19,7 +18,6 @@ export interface HistoryEntry {
 const initialState: InitialState = {
     weekBalance: 0,
     weekHistory: [],
-    isModalVisible: false,
     hasSetWeekBalance: false,
     isLoading: true,
 };
@@ -39,9 +37,6 @@ export const rootSlice = createSlice({
         },
         decrementBalance(state, action) {
             state.weekBalance = state.weekBalance - action.payload;
-        },
-        toggleModal(state) {
-            state.isModalVisible = !state.isModalVisible;
         },
         resetState(state) {
             state.weekBalance = 2000;
@@ -67,14 +62,11 @@ export const rootSlice = createSlice({
 export const selectBalance = (state: RootState) => state.mainStore.weekBalance;
 export const selectHistory = (state: RootState) => state.mainStore.weekHistory;
 export const selectIsLoading = (state: RootState) => state.mainStore.isLoading;
-export const selectModalStatus = (state: RootState) =>
-    state.mainStore.isModalVisible;
 export const selectHasSetWeekBalance = (state: RootState) =>
     state.mainStore.hasSetWeekBalance;
 
 export const {
     decrementBalance,
-    toggleModal,
     updateState,
     updateHistory,
     resetState,
@@ -82,12 +74,6 @@ export const {
     setIsLoading,
     removeHistoryEnty,
 } = rootSlice.actions;
-
-export const handleModalToggle =
-    () =>
-    (dispatch: AppDispatch): void => {
-        dispatch(toggleModal());
-    };
 
 export const handleDecrementBalance =
     (amount: number) =>
