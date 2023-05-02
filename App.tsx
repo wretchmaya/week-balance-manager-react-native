@@ -5,72 +5,34 @@
  * @format
  */
 import React from 'react';
-import { Section } from './components/Section/Section';
-import { View, StyleSheet } from 'react-native';
-import { Header } from './components/Header/Header';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { BalanceCalculationModal } from './components/BalanceCalculationModal/BalanceCalculationModal';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import {
-    handleDecrementBalance,
-    handleWeekHistory,
-    selectBalance,
-    selectHasSetWeekBalance,
-    selectIsLoading,
-} from './store/rootReducer';
-import { getDateFormat } from './helpers/getDateFormat';
-import { COLORS } from './variables/colors';
-import { Preloader } from './components/Preloader/Preloader';
-import { BalanceSettingModal } from './components/BalanceSettingModal/BalanceSettingModal';
-import { HistoryList } from './components/HistoryList/HistoryList';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HistoryItemDetailsScreen } from './components/HistoryDetailsScreen/HistoryDetailsScreen';
+import { TEXT } from './variables/text';
+import { MainScreen } from './components/MainScreen/MainScreen';
+
+const Stack = createNativeStackNavigator();
 
 const App = (): JSX.Element => {
-    const balance = useAppSelector(selectBalance);
-    const hasSetWeekBalance = useAppSelector(selectHasSetWeekBalance);
-    const isLoading = useAppSelector(selectIsLoading);
-    const dispatch = useAppDispatch();
-
-    const handleBalanceCalculation = (spentValue: string) => {
-        dispatch(handleDecrementBalance(Number(spentValue)));
-        createHistoryEntry(spentValue);
-    };
-
-    const createHistoryEntry = (spentValue: string) => {
-        const historyEntry = {
-            date: getDateFormat(),
-            spent: spentValue,
-            remainder: balance - Number(spentValue),
-        };
-        dispatch(handleWeekHistory(historyEntry));
-    };
+    console.log('OK');
 
     return (
-        <View style={styles.backGround}>
-            {isLoading ? (
-                <Preloader />
-            ) : (
-                <>
-                    <Header />
-                    <Section />
-                    {!hasSetWeekBalance && <BalanceSettingModal />}
-                    <BalanceCalculationModal
-                        handleBalanceCalculation={handleBalanceCalculation}
-                    />
-                    <HistoryList />
-                </>
-            )}
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen
+                    name={TEXT.APP.SCREENS.MAIN}
+                    component={MainScreen}
+                />
+                <Stack.Screen
+                    name={TEXT.APP.SCREENS.DETAILS}
+                    component={HistoryItemDetailsScreen}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    backGround: {
-        backgroundColor: COLORS.DARK_BLUE,
-        color: COLORS.WHITE,
-        flex: 1,
-    },
-});
 
 const Root = () => {
     return (

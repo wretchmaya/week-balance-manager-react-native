@@ -13,6 +13,7 @@ export interface HistoryEntry {
     date: string;
     spent: string;
     remainder: number;
+    note: string;
 }
 
 const initialState: InitialState = {

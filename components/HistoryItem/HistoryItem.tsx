@@ -8,13 +8,15 @@ import { FONTS } from '../../variables/fonts';
 import React from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { TEXT } from '../../variables/text';
-
+import { useNavigation } from '@react-navigation/native';
 export const HistoryItem = ({
     date,
     spent,
     remainder,
+    note,
 }: HistoryEntry): JSX.Element => {
     const dispatch = useAppDispatch();
+    const navigation = useNavigation<any>();
 
     const removeItem = () => {
         Alert.alert(
@@ -33,8 +35,13 @@ export const HistoryItem = ({
             ],
         );
     };
+
+    const navigateToDetails = () => {
+        navigation.navigate('Details', { date, spent, note });
+    };
+
     return (
-        <Pressable onPress={() => console.log('pressable')}>
+        <Pressable onPress={navigateToDetails}>
             <View style={styles.item}>
                 <Text style={[styles.title, styles.titleDate]}>{date}</Text>
                 <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
@@ -43,7 +50,7 @@ export const HistoryItem = ({
                 </Text>
 
                 <Button
-                    title="del"
+                    title={TEXT.BUTTON.DELETE}
                     onPress={removeItem}
                     color={COLORS.DARK_BLUE}
                 />
@@ -60,6 +67,7 @@ const styles = StyleSheet.create({
         marginVertical: 4,
         marginHorizontal: 12,
         backgroundColor: COLORS.AZURE,
+        borderRadius: 10,
     },
     title: {
         fontSize: FONTS.SIZE.TEXT,

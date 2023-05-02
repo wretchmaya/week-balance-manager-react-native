@@ -15,7 +15,7 @@ import { TEXT } from '../../variables/text';
 import { FONTS } from '../../variables/fonts';
 
 interface BalanceCalculationModalProps {
-    handleBalanceCalculation: (value: string) => void;
+    handleBalanceCalculation: (spent: string, note: string) => void;
 }
 
 export const BalanceCalculationModal = ({
@@ -23,17 +23,22 @@ export const BalanceCalculationModal = ({
 }: BalanceCalculationModalProps): JSX.Element => {
     const isModalVisible = useAppSelector(selectModalStatus);
     const dispatch = useAppDispatch();
-    const [spentValue, setSpentValue] = useState('');
+    const [inputValue, setInputValue] = useState({
+        spentAmount: '',
+        note: '',
+    });
 
     const handleInputChange = (
         e: NativeSyntheticEvent<TextInputChangeEventData>,
+        inputName: string,
     ) => {
-        setSpentValue(e.nativeEvent.text);
+        const { text } = e.nativeEvent;
+        setInputValue(prevState => ({ ...prevState, [inputName]: text }));
     };
 
     const handleOnPress = () => {
-        handleBalanceCalculation(spentValue);
-        setSpentValue('');
+        handleBalanceCalculation(inputValue.spentAmount, inputValue.note);
+        setInputValue({ spentAmount: '', note: '' });
         dispatch(handleModalToggle());
     };
 
@@ -42,19 +47,28 @@ export const BalanceCalculationModal = ({
             <View style={styles.modalWrapper}>
                 <View style={styles.modal}>
                     <Text style={styles.modalTitle}>
-                        {TEXT.MODAL.SPENT_BALANCE.INPUT_LABEL}
+                        {TEXT.MODAL.SPENT_BALANCE.INPUT_SPENT_LABEL}
                     </Text>
                     <TextInput
                         style={styles.modalInput}
-                        onChange={handleInputChange}
+                        onChange={e => handleInputChange(e, 'spentAmount')}
                         keyboardType="numeric"
                         placeholder="0"
-                        value={spentValue}
+                        value={inputValue.spentAmount}
+                    />
+                    <Text style={styles.modalTitle}>
+                        {TEXT.MODAL.SPENT_BALANCE.INPUT_NOTE_LABEL}
+                    </Text>
+                    <TextInput
+                        style={styles.modalInput}
+                        onChange={e => handleInputChange(e, 'note')}
+                        keyboardType="default"
+                        value={inputValue.note}
                     />
                     <Button
                         title={TEXT.BUTTON.DONE}
                         onPress={handleOnPress}
-                        disabled={!spentValue}
+                        disabled={!inputValue.spentAmount}
                     />
                 </View>
             </View>

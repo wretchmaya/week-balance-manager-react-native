@@ -15,7 +15,7 @@ import React from 'react';
 import { TEXT } from '../../variables/text';
 import { FONTS } from '../../variables/fonts';
 
-export const BalanceSettingModal = () => {
+export const SettingBalanceModal = () => {
     const dispatch = useAppDispatch();
 
     const [balanceValue, setBalanceValue] = useState('');
