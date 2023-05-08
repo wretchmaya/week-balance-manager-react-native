@@ -10,9 +10,9 @@ import { store } from './store/store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HistoryItemDetailsScreen } from './components/HistoryDetailsScreen/HistoryDetailsScreen';
-import { MainScreen } from './components/MainScreen/MainScreen';
 import { BalanceCalculationScreen } from './components/BalanceCalculationScreen/BalanceCalculationScreen';
 import { ROUTES } from './variables/routes';
+import { HomeScreenTabs } from './components/HomeScreenTabs/HomeScreenTabs';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +23,8 @@ const App = (): JSX.Element => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen
-                    name={ROUTES.SCREENS.MAIN}
-                    component={MainScreen}
+                    name={ROUTES.SCREENS.HOME}
+                    component={HomeScreenTabs}
                 />
                 <Stack.Screen
                     name={ROUTES.SCREENS.DETAILS}

@@ -3,6 +3,7 @@ import rootReducer, { setIsLoading, updateState } from './rootReducer';
 import debounce from 'lodash.debounce';
 import {
     clearStorageOnMonday,
+    getAllHistory,
     getDataFromStorage,
     getIsSetWeekBalanceOnMonday,
     saveDataToStorage,
@@ -17,16 +18,33 @@ export const store = configureStore({
 (async () => {
     await clearStorageOnMonday();
     await getIsSetWeekBalanceOnMonday();
-
+    console.log('anonym');
     const cachedData = await getDataFromStorage();
-
-    if (cachedData) {
-        const [weekHistory, weekBalance, hasSetWeekBalance] = cachedData;
+    const allHistory = await getAllHistory();
+    console.log(cachedData, 'cachedata');
+    if (cachedData && allHistory) {
+        const [
+            weekHistory,
+            weekBalance,
+            hasSetWeekBalance,
+            initialWeekBalance,
+        ] = cachedData;
+        console.log('update state full');
         store.dispatch(
             updateState({
                 weekHistory,
                 weekBalance,
                 hasSetWeekBalance,
+                initialWeekBalance,
+                allHistory,
+            }),
+        );
+        return;
+    } else if (allHistory) {
+        console.log('update state all hisotry only');
+        store.dispatch(
+            updateState({
+                allHistory,
             }),
         );
         return;
@@ -38,7 +56,9 @@ const _debounce = debounce(() => {
     saveDataToStorage(
         store.getState().mainStore.weekHistory,
         store.getState().mainStore.weekBalance,
+        store.getState().mainStore.initialWeekBalance,
         store.getState().mainStore.hasSetWeekBalance,
+        store.getState().mainStore.allHistory,
     );
 }, 600);
 

@@ -10,12 +10,17 @@ import { useAppDispatch } from '../../store/hooks';
 import { TEXT } from '../../variables/text';
 import { useNavigation } from '@react-navigation/native';
 import { ROUTES } from '../../variables/routes';
+
+interface HistoryItemProps extends HistoryEntry {
+    withDeleteButton?: boolean;
+}
 export const HistoryItem = ({
     date,
     spent,
     remainder,
     note,
-}: HistoryEntry): JSX.Element => {
+    withDeleteButton,
+}: HistoryItemProps): JSX.Element => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<any>();
 
@@ -44,26 +49,37 @@ export const HistoryItem = ({
     return (
         <Pressable onPress={navigateToDetails}>
             <View style={styles.item}>
-                <Text style={[styles.title, styles.titleDate]}>{date}</Text>
-                <Text style={[styles.title, styles.titleSpent]}>{spent}</Text>
-                <Text style={[styles.title, styles.titleBalance]}>
-                    {remainder}
-                </Text>
+                <View style={styles.test}>
+                    <Text style={[styles.title, styles.titleDate]}>{date}</Text>
+                    <Text style={[styles.title, styles.titleSpent]}>
+                        {spent}
+                    </Text>
+                    <Text style={[styles.title, styles.titleBalance]}>
+                        {remainder}
+                    </Text>
 
-                <Button
-                    title={TEXT.BUTTON.DELETE}
-                    onPress={removeItem}
-                    color={COLORS.DARK_BLUE}
-                />
+                    {withDeleteButton ? (
+                        <Button
+                            title={TEXT.BUTTON.DELETE}
+                            onPress={removeItem}
+                            color={COLORS.DARK_BLUE}
+                        />
+                    ) : (
+                        <Text style={styles.note}>{note}</Text>
+                    )}
+                </View>
             </View>
         </Pressable>
     );
 };
 
 const styles = StyleSheet.create({
-    item: {
+    test: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        width: '100%',
+    },
+    item: {
         paddingVertical: 20,
         marginVertical: 4,
         marginHorizontal: 12,
@@ -82,5 +98,9 @@ const styles = StyleSheet.create({
     },
     titleBalance: {
         color: COLORS.MONEY_GREEN,
+    },
+    note: {
+        flexWrap: 'wrap',
+        width: 60,
     },
 });

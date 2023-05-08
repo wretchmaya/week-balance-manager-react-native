@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     handleDecrementBalance,
-    handleWeekHistory,
+    handleHistory,
     selectBalance,
 } from '../../store/rootReducer';
 import {
@@ -18,6 +18,7 @@ import { TEXT } from '../../variables/text';
 import { FONTS } from '../../variables/fonts';
 import { getDateFormat } from '../../helpers/getDateFormat';
 import { useNavigation } from '@react-navigation/native';
+import { getWeekId } from '../../helpers/getWeekId';
 
 export const BalanceCalculationScreen = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -53,8 +54,9 @@ export const BalanceCalculationScreen = (): JSX.Element => {
             spent: inputValue.spentAmount,
             remainder: balance - Number(inputValue.spentAmount),
             note: inputValue.note,
+            weekId: getWeekId(),
         };
-        dispatch(handleWeekHistory(historyEntry));
+        dispatch(handleHistory(historyEntry));
     };
 
     return (

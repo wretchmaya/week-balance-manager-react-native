@@ -12,7 +12,7 @@ import { HistoryList } from '../HistoryList/HistoryList';
 import { COLORS } from '../../variables/colors';
 import { Header } from '../Header/Header';
 
-export const MainScreen = () => {
+export const MainTab = () => {
     const hasSetWeekBalance = useAppSelector(selectHasSetWeekBalance);
     const isLoading = useAppSelector(selectIsLoading);
 

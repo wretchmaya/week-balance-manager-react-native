@@ -1,30 +1,40 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { COLORS } from '../../variables/colors';
 import { useAppSelector } from '../../store/hooks';
-import { selectHistory } from '../../store/rootReducer';
+import { selectWeekHistory } from '../../store/rootReducer';
 import React from 'react';
 import { TEXT } from '../../variables/text';
 import { HistoryItem } from '../HistoryItem/HistoryItem';
 
 export const HistoryList = () => {
-    const history = useAppSelector(selectHistory);
+    const history = useAppSelector(selectWeekHistory);
 
     return (
         <View style={styles.historySectionContainer}>
             <View style={styles.listHead}>
                 <Text style={[styles.listHead__title, styles.titleDate]}>
-                    {TEXT.DATE}
+                    {TEXT.COMMON.DATE}
                 </Text>
                 <View style={styles.listHead__content}>
-                    <Text style={styles.listHead__title}>{TEXT.SPENT}</Text>
-                    <Text style={styles.listHead__title}>{TEXT.REMAINDER}</Text>
+                    <Text style={styles.listHead__title}>
+                        {TEXT.COMMON.SPENT}
+                    </Text>
+                    <Text style={styles.listHead__title}>
+                        {TEXT.COMMON.REMAINDER}
+                    </Text>
                 </View>
             </View>
             <View style={styles.historyListContainer}>
                 <ScrollView style={styles.historyList}>
-                    {history?.map((item, index) => (
-                        <HistoryItem {...item} key={index} />
-                    ))}
+                    {history?.map(item => {
+                        return (
+                            <HistoryItem
+                                {...item}
+                                withDeleteButton
+                                key={item.date + item.spent}
+                            />
+                        );
+                    })}
                 </ScrollView>
             </View>
         </View>

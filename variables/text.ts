@@ -1,8 +1,12 @@
 export const TEXT = {
-    DATE: 'Date',
-    SPENT: 'Spent',
-    REMAINDER: 'Left',
-    UAH: 'UAH',
+    COMMON: {
+        DATE: 'Date',
+        SPENT: 'Spent',
+        REMAINDER: 'Left',
+        UAH: 'UAH',
+        TOTAL_SPENT: 'Total spent',
+        TOTAL_DAYS: 'Total days',
+    },
     BUTTON: {
         DONE: 'Done',
         CALCULATE: 'Calculate',
@@ -32,7 +36,7 @@ export const TEXT = {
     ALERT: {
         RESET_BALANCE: {
             TITLE: 'Reset Balance',
-            TEXT: 'Do you want to reset amount back to 2000?',
+            TEXT: 'Do you want to reset your weekly balance and history?',
         },
         DELETE_HISTORY_ENTRY: {
             TITLE: 'Delete History',

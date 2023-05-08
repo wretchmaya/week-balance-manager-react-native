@@ -17,7 +17,7 @@ export const HistoryItemDetailsScreen = ({ route }: any) => {
                 <Text style={styles.detailsText}>
                     {TEXT.MODAL.HISOTRY_DETAILS.SPENT}:{' '}
                     <Text style={styles.detailsTextSpent}>{spent}</Text>{' '}
-                    {TEXT.UAH}
+                    {TEXT.COMMON.UAH}
                 </Text>
                 <Text style={styles.detailsText}>
                     {TEXT.MODAL.HISOTRY_DETAILS.SPENT_ON}:{' '}
